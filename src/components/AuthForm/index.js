@@ -1,4 +1,4 @@
-import React from 'react'
+import createElement from '../../utilities/createElement'
 import fluce from '../../fluce'
 import createSmartComponent from '../../utilities/createSmartComponent'
 import createSubscription from '../../utilities/createSubscription'
@@ -47,7 +47,8 @@ function render({state: {username, password, disabled, error}}) {
   )
 }
 
-export default createSmartComponent({
+/* AuthForm() : ReactElement */
+export default createSmartComponent('AuthForm', {
   collectState,
   subscription: createSubscription(fluce, ['authForm']),
   render

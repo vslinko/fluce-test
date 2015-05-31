@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function createSmartComponent({collectState, subscription, render}) {
+export default function createSmartComponent(displayName, {collectState, subscription, render}) {
   const unsubscribers = {}
 
   function afterMount(component, el, setState) {
@@ -19,6 +19,7 @@ export default function createSmartComponent({collectState, subscription, render
   }
 
   class Component extends React.Component {
+    static displayName = displayName
     static id = 0
 
     constructor(props) {

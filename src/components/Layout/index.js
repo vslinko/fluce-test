@@ -1,5 +1,6 @@
-import React from 'react'
+import createElement from '../../utilities/createElement'
 
+/* Layout({currentUser: {username: string}, children: ReactElement}) : ReactElement */
 export default function Layout({currentUser, children}) {
   return (
     <div>

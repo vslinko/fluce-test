@@ -1,4 +1,4 @@
-import React from 'react'
+import createElement from '../../utilities/createElement'
 import fluce from '../../fluce'
 import AuthForm from '../AuthForm'
 import Layout from '../Layout'
@@ -11,14 +11,14 @@ function collectState() {
 
 function render({state: {currentUser}}) {
   return (
-    Layout({
-      currentUser,
-      children: AuthForm()
-    })
+    <Layout currentUser={currentUser}>
+      <AuthForm />
+    </Layout>
   )
 }
 
-export default createSmartComponent({
+/* Application() : ReactElement */
+export default createSmartComponent('Application', {
   collectState,
   subscription: createSubscription(fluce, ['currentUser']),
   render
