@@ -1,4 +1,4 @@
-import {element} from 'deku'
+import React from 'react'
 
 export default function createSmartComponent({collectState, subscription, render}) {
   const unsubscribers = {}
@@ -18,12 +18,29 @@ export default function createSmartComponent({collectState, subscription, render
     delete unsubscribers[id]
   }
 
+  class Component extends React.Component {
+    static id = 0
+
+    constructor(props) {
+      super(props)
+      this.state = collectState()
+    }
+
+    componentWillMount() {
+      this.id = Component.id++
+      afterMount({id: this.id}, null, ::this.setState)
+    }
+
+    componentWillUnmount() {
+      beforeUnmount({id: this.id}, null)
+    }
+
+    render() {
+      return render({state: this.state, props: this.props, id: this.id}, ::this.setState)
+    }
+  }
+
   return function(props) {
-    return element({
-      initialState: collectState,
-      afterMount,
-      beforeUnmount,
-      render
-    }, props)
+    return React.createElement(Component, props)
   }
 }

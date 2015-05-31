@@ -1,4 +1,4 @@
-import {element} from 'deku'
+import React from 'react'
 import fluce from '../../fluce'
 import createSmartComponent from '../../utilities/createSmartComponent'
 import createSubscription from '../../utilities/createSubscription'
@@ -27,7 +27,7 @@ function render({state: {username, password, disabled, error}}) {
         <label>
           Username:
           <br />
-          <input value={username} disabled={disabled} onKeyUp={handleUsernameChange} />
+          <input value={username} disabled={disabled} onChange={handleUsernameChange} />
         </label>
         {username}
       </div>
@@ -35,7 +35,7 @@ function render({state: {username, password, disabled, error}}) {
         <label>
           Password:
           <br />
-          <input value={password} disabled={disabled} onKeyUp={handlePasswordChange} />
+          <input value={password} disabled={disabled} onChange={handlePasswordChange} />
         </label>
         {password}
       </div>

@@ -1,4 +1,4 @@
-import {element} from 'deku'
+import React from 'react'
 
 export default function Layout({currentUser, children}) {
   return (

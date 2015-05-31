@@ -1,10 +1,9 @@
-import {element, tree, render} from 'deku'
-import fluce from './fluce'
+import React from 'react'
 import Application from './components/Application'
 
 document.addEventListener('DOMContentLoaded', () => {
-  render(
-    tree(Application()),
+  React.render(
+    Application(),
     document.getElementById('application')
   )
 })
