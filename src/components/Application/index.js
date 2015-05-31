@@ -3,7 +3,7 @@ import fluce from '../../fluce'
 import AuthForm from '../AuthForm'
 import Layout from '../Layout'
 import createSmartComponent from '../../utilities/createSmartComponent'
-import createSubscription from '../../utilities/createSubscription'
+import createFluceObserver from '../../utilities/createFluceObserver'
 
 function collectState() {
   return {currentUser: fluce.stores.currentUser}
@@ -18,8 +18,7 @@ function render({state: {currentUser}}) {
 }
 
 const component = createSmartComponent('Application', {
-  collectState,
-  subscription: createSubscription(fluce, ['currentUser']),
+  source: createFluceObserver(fluce, ['currentUser'], collectState),
   render
 })
 

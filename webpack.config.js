@@ -12,7 +12,7 @@ module.exports = {
 
   module: {
     loaders: [
-      {test: /\.js$/, loaders: ['babel']}
+      {test: /\.js$/, exclude: [/\/rx\//], loaders: ['babel']}
     ]
   },
 

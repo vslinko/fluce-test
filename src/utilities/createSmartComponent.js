@@ -1,21 +1,21 @@
 import React from 'react'
 
-export default function createSmartComponent(displayName, {collectState, subscription, render}) {
-  const unsubscribers = {}
+export default function createSmartComponent(displayName, {source, render}) {
+  const subscriptions = {}
 
   function afterMount(component, el, setState) {
     const {id} = component
 
-    unsubscribers[id] = subscription(() => {
-      setState(collectState())
+    subscriptions[id] = source.subscribeOnNext(state => {
+      setState(state)
     })
   }
 
   function beforeUnmount(component, el) {
     const {id} = component
 
-    unsubscribers[id]()
-    delete unsubscribers[id]
+    subscriptions[id].dispose()
+    delete subscriptions[id]
   }
 
   class Component extends React.Component {
@@ -24,7 +24,7 @@ export default function createSmartComponent(displayName, {collectState, subscri
 
     constructor(props) {
       super(props)
-      this.state = collectState()
+      this.state = {}
     }
 
     componentWillMount() {

@@ -1,7 +1,7 @@
 import createElement from '../../utilities/createElement'
 import fluce from '../../fluce'
 import createSmartComponent from '../../utilities/createSmartComponent'
-import createSubscription from '../../utilities/createSubscription'
+import createFluceObserver from '../../utilities/createFluceObserver'
 
 function collectState() {
   return fluce.stores.authForm
@@ -48,8 +48,7 @@ function render({state: {username, password, disabled, error}}) {
 }
 
 const component = createSmartComponent('AuthForm', {
-  collectState,
-  subscription: createSubscription(fluce, ['authForm']),
+  source: createFluceObserver(fluce, ['authForm'], collectState),
   render
 });
 
