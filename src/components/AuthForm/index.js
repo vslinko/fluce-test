@@ -38,14 +38,27 @@ function handleSubmit(event) {
   fluce.actions.authFormSubmit()
 }
 
-function render({data: {username, password}, valid, disabled, error}) {
+type AuthFormProps = {
+  data: {username: string, password: string},
+  valid: boolean,
+  disabled: boolean,
+  error: ?Error,
+  onSubmit: (event: Event) => void,
+  onUsernameChange: (event: Event) => void,
+  onPasswordChange: (event: Event) => void
+}
+
+export function DumbAuthForm(props: AuthFormProps) {
+  const {data: {username, password}, valid, disabled, error} = props
+  const {onSubmit, onUsernameChange, onPasswordChange} = props
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={onSubmit}>
       <Field label="Username" note={username}>
-        <input value={username} disabled={disabled} onChange={handleUsernameChange} />
+        <input value={username} disabled={disabled} onChange={onUsernameChange} />
       </Field>
       <Field label="Password" note={password}>
-        <input value={password} disabled={disabled} onChange={handlePasswordChange} />
+        <input value={password} disabled={disabled} onChange={onPasswordChange} />
       </Field>
       <div>
         <button disabled={disabled}>Authorize</button>
@@ -55,9 +68,16 @@ function render({data: {username, password}, valid, disabled, error}) {
   )
 }
 
-const component = createSmartComponent('AuthForm', {
+const component = createSmartComponent({
   source: createFluceObserver(fluce, ['authForm'], collectState),
-  render
+  component: function SmartAuthForm(props) {
+    return (
+      <DumbAuthForm {...props}
+                    onSubmit={handleSubmit}
+                    onUsernameChange={handleUsernameChange}
+                    onPasswordChange={handlePasswordChange} />
+    )
+  }
 });
 
 export default function AuthForm() : ReactElement {

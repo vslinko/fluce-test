@@ -1,8 +1,9 @@
 import React from 'react'
+import R from 'ramda'
 
-export default function createSmartComponent(displayName, {source, render}) {
+export default function createSmartComponent({source, component, displayName}) {
   class Component extends React.Component {
-    static displayName = displayName
+    static displayName = component.name || component.displayName || displayName
 
     constructor(props) {
       super(props)
@@ -20,7 +21,7 @@ export default function createSmartComponent(displayName, {source, render}) {
     }
 
     render() {
-      return render(this.state, this.props)
+      return component(R.merge(this.props, this.state))
     }
   }
 
