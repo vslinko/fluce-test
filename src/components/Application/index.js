@@ -1,6 +1,7 @@
 import {element} from 'deku'
 import fluce from '../../fluce'
 import AuthForm from '../AuthForm'
+import Layout from '../Layout'
 import createSmartComponent from '../../utilities/createSmartComponent'
 import createSubscription from '../../utilities/createSubscription'
 
@@ -10,10 +11,10 @@ function collectState() {
 
 function render({state: {currentUser}}) {
   return (
-    <div>
-      <AuthForm />
-      {currentUser && <div>Welcome, {currentUser.username}!</div>}
-    </div>
+    Layout({
+      currentUser,
+      children: AuthForm()
+    })
   )
 }
 

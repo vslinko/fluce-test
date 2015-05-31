@@ -1,26 +1,29 @@
-import R from 'ramda'
+import {element} from 'deku'
 
 export default function createSmartComponent({collectState, subscription, render}) {
-  const unsubscribers = {};
+  const unsubscribers = {}
 
-  return {
-    initialState: collectState,
+  function afterMount(component, el, setState) {
+    const {id} = component
 
-    afterMount(component, el, setState) {
-      const {id} = component
+    unsubscribers[id] = subscription(() => {
+      setState(collectState())
+    })
+  }
 
-      unsubscribers[id] = subscription(() => {
-        setState(collectState())
-      })
-    },
+  function beforeUnmount(component, el) {
+    const {id} = component
 
-    beforeUnmount(component, el) {
-      const {id} = component
+    unsubscribers[id]()
+    delete unsubscribers[id]
+  }
 
-      unsubscribers[id]()
-      delete unsubscribers[id]
-    },
-
-    render
+  return function(props) {
+    return element({
+      initialState: collectState,
+      afterMount,
+      beforeUnmount,
+      render
+    }, props)
   }
 }

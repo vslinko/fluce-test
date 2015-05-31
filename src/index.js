@@ -4,7 +4,7 @@ import Application from './components/Application'
 
 document.addEventListener('DOMContentLoaded', () => {
   render(
-    tree(<Application />),
+    tree(Application()),
     document.getElementById('application')
   )
 })
