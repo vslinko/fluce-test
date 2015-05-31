@@ -20,7 +20,7 @@ function handleSubmit(event) {
   fluce.actions.authFormSubmit()
 }
 
-function render({state: {username, password, disabled, error}}) {
+function render({username, password, disabled, error}) {
   return (
     <form onSubmit={handleSubmit}>
       <div>

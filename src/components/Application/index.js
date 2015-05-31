@@ -9,7 +9,7 @@ function collectState() {
   return {currentUser: fluce.stores.currentUser}
 }
 
-function render({state: {currentUser}}) {
+function render({currentUser}) {
   return (
     <Layout currentUser={currentUser}>
       <AuthForm />

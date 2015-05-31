@@ -1,26 +1,8 @@
 import React from 'react'
 
 export default function createSmartComponent(displayName, {source, render}) {
-  const subscriptions = {}
-
-  function afterMount(component, el, setState) {
-    const {id} = component
-
-    subscriptions[id] = source.subscribeOnNext(state => {
-      setState(state)
-    })
-  }
-
-  function beforeUnmount(component, el) {
-    const {id} = component
-
-    subscriptions[id].dispose()
-    delete subscriptions[id]
-  }
-
   class Component extends React.Component {
     static displayName = displayName
-    static id = 0
 
     constructor(props) {
       super(props)
@@ -28,20 +10,21 @@ export default function createSmartComponent(displayName, {source, render}) {
     }
 
     componentWillMount() {
-      this.id = Component.id++
-      afterMount({id: this.id}, null, ::this.setState)
+      this.subscription = source.subscribeOnNext(state => {
+        this.setState(state)
+      })
     }
 
     componentWillUnmount() {
-      beforeUnmount({id: this.id}, null)
+      this.subscription.dispose()
     }
 
     render() {
-      return render({state: this.state, props: this.props, id: this.id}, ::this.setState)
+      return render(this.state, this.props)
     }
   }
 
-  return function(props) {
+  return function(props = null) {
     return React.createElement(Component, props)
   }
 }
