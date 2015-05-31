@@ -1,3 +1,4 @@
+import R from 'ramda'
 import createElement from '../../utilities/createElement'
 import fluce from '../../fluce'
 import createSmartComponent from '../../utilities/createSmartComponent'
@@ -21,10 +22,6 @@ function Field(props : FieldProps) : ReactElement {
   )
 }
 
-function collectState() {
-  return fluce.stores.authForm
-}
-
 function handleUsernameChange(event) {
   fluce.actions.authFormUsername(event.target.value)
 }
@@ -38,6 +35,14 @@ function handleSubmit(event) {
   fluce.actions.authFormSubmit()
 }
 
+function collectState() {
+  return R.merge(fluce.stores.authForm, {
+    onSubmit: handleSubmit,
+    onUsernameChange: handleUsernameChange,
+    onPasswordChange: handlePasswordChange
+  })
+}
+
 type AuthFormProps = {
   data: {username: string, password: string},
   valid: boolean,
@@ -48,7 +53,7 @@ type AuthFormProps = {
   onPasswordChange: (event: Event) => void
 }
 
-export function DumbAuthForm(props: AuthFormProps) {
+export function AuthForm(props: AuthFormProps) : ReactElement {
   const {data: {username, password}, valid, disabled, error} = props
   const {onSubmit, onUsernameChange, onPasswordChange} = props
 
@@ -68,18 +73,7 @@ export function DumbAuthForm(props: AuthFormProps) {
   )
 }
 
-const component = createSmartComponent({
+export default createSmartComponent({
   source: createFluceObserver(fluce, ['authForm'], collectState),
-  component: function SmartAuthForm(props) {
-    return (
-      <DumbAuthForm {...props}
-                    onSubmit={handleSubmit}
-                    onUsernameChange={handleUsernameChange}
-                    onPasswordChange={handlePasswordChange} />
-    )
-  }
+  component: AuthForm
 });
-
-export default function AuthForm() : ReactElement {
-  return component()
-}

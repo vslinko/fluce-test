@@ -9,7 +9,11 @@ function collectState() {
   return {currentUser: fluce.stores.currentUser}
 }
 
-export function DumbApplication({currentUser}) {
+type ApplicationProps = {currentUser: mixed}
+
+export function Application(props: ApplicationProps) : ReactElement {
+  const {currentUser} = props
+
   return (
     <Layout currentUser={currentUser}>
       <AuthForm />
@@ -17,13 +21,7 @@ export function DumbApplication({currentUser}) {
   )
 }
 
-const component = createSmartComponent({
+export default createSmartComponent({
   source: createFluceObserver(fluce, ['currentUser'], collectState),
-  component: function SmartApplication(props) {
-    return <DumbApplication {...props} />
-  }
+  component: Application
 })
-
-export default function Application() : ReactElement {
-  return component()
-}
