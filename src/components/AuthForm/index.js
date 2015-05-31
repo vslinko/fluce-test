@@ -1,14 +1,10 @@
 import {element} from 'deku'
 import fluce from '../../fluce'
+import createSmartComponent from '../../utilities/createSmartComponent'
+import createSubscription from '../../utilities/createSubscription'
 
 function collectState() {
   return fluce.stores.authForm
-}
-
-function afterMount(component, el, setState) {
-  fluce.subscribe(['authForm'], () => {
-    setState(collectState())
-  })
 }
 
 function handleUsernameChange(event) {
@@ -51,8 +47,8 @@ function render({state: {username, password, disabled, error}}) {
   )
 }
 
-export default {
-  initialState: collectState,
-  afterMount,
+export default createSmartComponent({
+  collectState,
+  subscription: createSubscription(fluce, ['authForm']),
   render
-}
+});

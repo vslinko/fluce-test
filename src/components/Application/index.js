@@ -1,15 +1,11 @@
 import {element} from 'deku'
 import fluce from '../../fluce'
 import AuthForm from '../AuthForm'
+import createSmartComponent from '../../utilities/createSmartComponent'
+import createSubscription from '../../utilities/createSubscription'
 
 function collectState() {
   return {currentUser: fluce.stores.currentUser}
-}
-
-function afterMount(component, el, setState) {
-  fluce.subscribe(['currentUser'], () => {
-    setState(collectState())
-  })
 }
 
 function render({state: {currentUser}}) {
@@ -21,8 +17,8 @@ function render({state: {currentUser}}) {
   )
 }
 
-export default {
-  initialState: collectState,
-  afterMount,
+export default createSmartComponent({
+  collectState,
+  subscription: createSubscription(fluce, ['currentUser']),
   render
-}
+})
