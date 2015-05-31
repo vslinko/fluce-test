@@ -1,5 +1,5 @@
 {
-  "name": "deku-fluce-test",
+  "name": "fluce-test",
   "version": "1.0.0",
   "scripts": {
     "start": "webpack-dev-server"
