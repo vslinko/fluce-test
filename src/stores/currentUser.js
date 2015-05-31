@@ -1,14 +1,16 @@
+import {CURRENT_USER} from '../constants'
+
 function initial() {
   return null
 }
 
-function currentUser(state, currentUser) {
+function currentUserReducer(state, currentUser) {
   return currentUser
 }
 
 export default {
   initial,
   reducers: {
-    currentUser
+    [CURRENT_USER]: currentUserReducer
   }
 }

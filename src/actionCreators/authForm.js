@@ -1,9 +1,17 @@
+import {
+  AUTH_FORM_USERNAME,
+  AUTH_FORM_PASSWORD,
+  AUTH_FORM_DISABLED,
+  AUTH_FORM_ERROR,
+  CURRENT_USER
+} from '../constants'
+
 function authFormUsername(fluce, username) {
   const {disabled} = fluce.stores.authForm
 
   if (disabled) return
 
-  fluce.dispatch('authFormUsername', username)
+  fluce.dispatch(AUTH_FORM_USERNAME, username)
 }
 
 function authFormPassword(fluce, username) {
@@ -11,7 +19,7 @@ function authFormPassword(fluce, username) {
 
   if (disabled) return
 
-  fluce.dispatch('authFormPassword', username)
+  fluce.dispatch(AUTH_FORM_PASSWORD, username)
 }
 
 function authFormSubmit(fluce) {
@@ -20,21 +28,21 @@ function authFormSubmit(fluce) {
   if (disabled) return
 
   if (!valid) {
-    fluce.dispatch('authFormError', new Error('Form is invalid'))
+    fluce.dispatch(AUTH_FORM_ERROR, new Error('Form is invalid'))
     return
   }
 
-  fluce.dispatch('authFormDisabled', true)
-  fluce.dispatch('authFormError', null)
+  fluce.dispatch(AUTH_FORM_DISABLED, true)
+  fluce.dispatch(AUTH_FORM_ERROR, null)
 
   setTimeout(() => {
     if (Math.random() > 0.5) {
-      fluce.dispatch('authFormError', new Error('Invalid credentials'))
+      fluce.dispatch(AUTH_FORM_ERROR, new Error('Invalid credentials'))
     } else {
-      fluce.dispatch('currentUser', {username})
+      fluce.dispatch(CURRENT_USER, {username})
     }
 
-    fluce.dispatch('authFormDisabled', false)
+    fluce.dispatch(AUTH_FORM_DISABLED, false)
   }, 1000)
 }
 

@@ -1,4 +1,10 @@
 import R from 'ramda'
+import {
+  AUTH_FORM_USERNAME,
+  AUTH_FORM_PASSWORD,
+  AUTH_FORM_DISABLED,
+  AUTH_FORM_ERROR
+} from '../constants'
 
 function validate({username, password}) {
   return username.trim().length > 0 && password.trim().length > 0
@@ -27,28 +33,28 @@ function mergeData(state, changes) {
   })
 }
 
-function authFormUsername(state, username) {
+function usernameReducer(state, username) {
   return mergeData(state, {username})
 }
 
-function authFormPassword(state, password) {
+function passwordReducer(state, password) {
   return mergeData(state, {password})
 }
 
-function authFormDisabled(state, disabled) {
+function disabledReducer(state, disabled) {
   return R.merge(state, {disabled})
 }
 
-function authFormError(state, error) {
+function errorReducer(state, error) {
   return R.merge(state, {error})
 }
 
 export default {
   initial,
   reducers: {
-    authFormUsername,
-    authFormPassword,
-    authFormDisabled,
-    authFormError
+    [AUTH_FORM_USERNAME]: usernameReducer,
+    [AUTH_FORM_PASSWORD]: passwordReducer,
+    [AUTH_FORM_DISABLED]: disabledReducer,
+    [AUTH_FORM_ERROR]: errorReducer
   }
 }
