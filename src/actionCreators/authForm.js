@@ -11,6 +11,11 @@ function authFormPassword(fluce, username) {
 }
 
 function authFormSubmit(fluce) {
+  if (!fluce.stores.authForm.valid) {
+    fluce.dispatch('authFormError', new Error('Form is invalid'))
+    return
+  }
+
   if (fluce.stores.authForm.disabled) return
 
   fluce.dispatch('authFormDisabled', true)
@@ -20,7 +25,7 @@ function authFormSubmit(fluce) {
     if (Math.random() > 0.5) {
       fluce.dispatch('authFormError', new Error('Invalid credentials'))
     } else {
-      fluce.dispatch('currentUser', {username: fluce.stores.authForm.username})
+      fluce.dispatch('currentUser', {username: fluce.stores.authForm.data.username})
     }
 
     fluce.dispatch('authFormDisabled', false)
