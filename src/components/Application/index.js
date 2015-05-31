@@ -17,9 +17,12 @@ function render({state: {currentUser}}) {
   )
 }
 
-/* Application() : ReactElement */
-export default createSmartComponent('Application', {
+const component = createSmartComponent('Application', {
   collectState,
   subscription: createSubscription(fluce, ['currentUser']),
   render
 })
+
+export default function Application() : ReactElement {
+  return component()
+}

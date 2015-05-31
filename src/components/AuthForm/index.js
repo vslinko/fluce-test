@@ -47,9 +47,12 @@ function render({state: {username, password, disabled, error}}) {
   )
 }
 
-/* AuthForm() : ReactElement */
-export default createSmartComponent('AuthForm', {
+const component = createSmartComponent('AuthForm', {
   collectState,
   subscription: createSubscription(fluce, ['authForm']),
   render
 });
+
+export default function AuthForm() : ReactElement {
+  return component()
+}
