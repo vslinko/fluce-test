@@ -3,6 +3,24 @@ import fluce from '../../fluce'
 import createSmartComponent from '../../utilities/createSmartComponent'
 import createFluceObserver from '../../utilities/createFluceObserver'
 
+type FieldProps = {label: string, note: string, children: ReactElement}
+
+function Field(props : FieldProps) : ReactElement {
+  const {label, note, children} = props
+
+  return (
+    <div>
+      <label>
+        {label}
+        <br />
+        {children}
+      </label>
+      &nbsp;
+      {note}
+    </div>
+  )
+}
+
 function collectState() {
   return fluce.stores.authForm
 }
@@ -23,22 +41,12 @@ function handleSubmit(event) {
 function render({data: {username, password}, valid, disabled, error}) {
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>
-          Username:
-          <br />
-          <input value={username} disabled={disabled} onChange={handleUsernameChange} />
-        </label>
-        {username}
-      </div>
-      <div>
-        <label>
-          Password:
-          <br />
-          <input value={password} disabled={disabled} onChange={handlePasswordChange} />
-        </label>
-        {password}
-      </div>
+      <Field label="Username" note={username}>
+        <input value={username} disabled={disabled} onChange={handleUsernameChange} />
+      </Field>
+      <Field label="Password" note={password}>
+        <input value={password} disabled={disabled} onChange={handlePasswordChange} />
+      </Field>
       <div>
         <button disabled={disabled}>Authorize</button>
       </div>
